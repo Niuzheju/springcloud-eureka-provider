@@ -6,6 +6,3 @@ eureka:
     serviceUrl:
     #注册中心地址
       defaultZone: http://localhost:1111/eureka/
-  instance:
-    leaseRenewalIntervalInSeconds: 1
-    leaseExpirationDurationInSeconds: 2
