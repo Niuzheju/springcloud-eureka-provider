@@ -17,8 +17,9 @@ public class IndexController {
     private DiscoveryClient discoveryClient;
 
     @RequestMapping("/hello")
-    public String hello(){
+    public String hello(String name){
         ServiceInstance localServiceInstance = discoveryClient.getLocalServiceInstance();
+        logger.info(name);
         logger.info("/hello, host=" + localServiceInstance.getHost() + ",serviceId=" + localServiceInstance.getServiceId());
         return "success";
     }

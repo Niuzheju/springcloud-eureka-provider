@@ -1,8 +1,38 @@
 spring:
   application:
     name: provider
+#eureka.client, 为服务注册类配置信息,都是与服务注册相关的配置, 一般配置在客户端,更多配置见EurekaClientConfigBean
 eureka:
   client:
     serviceUrl:
     #注册中心地址
       defaultZone: http://localhost:1111/eureka/
+    #开启eureka客户端
+    enabled: true
+    #从服务端获取注册信息的间隔时间
+    registry-fetch-interval-seconds: 20
+    #连接服务端的超时时间
+    eureka-server-connect-timeout-seconds: 10
+  #服务示例配置,具体可参考EurekaInstanceConfigBean,大部分内容是元数据配置
+  instance:
+    metaDataMap:
+      zone:  hangzhou
+    #实例id
+    instanceId: ${spring.application.name}:${random.int}
+    #以下三个属性都可使用绝对路径
+    #状态页url,即actuator的/info端点
+    statusPageUrlPath:  /info
+    #健康检查url, 即actuator的/health端点
+    healthCheckUrlPath:  /health
+    #项目主页
+    homePageUrl:  /index.html
+    #使用springboot-actuator的健康检查, 默认是使用eureka的健康检查
+    healthcheck:
+      enabled: true
+    appname: provider1
+    prefer-ip-address: true
+server:
+  port: 0
+
+
+
