@@ -6,3 +6,8 @@ eureka:
     serviceUrl:
     #注册中心地址
       defaultZone: http://localhost:1111/eureka/
+  instance:
+  # 服务续约任务调用间隔时间, 服务注册中心会间歇性的调用provider, 这个值定义的是调用的间隔时间
+    lease-renewal-interval-in-seconds: 30
+  # 服务失效时间, 服务在超过指定的时间后心跳不存在就认为服务挂掉
+    lease-expiration-duration-in-seconds: 90
