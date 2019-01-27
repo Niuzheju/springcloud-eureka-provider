@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.logging.Logger;
@@ -17,8 +18,9 @@ public class IndexController {
     private DiscoveryClient discoveryClient;
 
     @RequestMapping("/hello")
-    public String hello(){
+    public String hello(String name){
         ServiceInstance localServiceInstance = discoveryClient.getLocalServiceInstance();
+        logger.info(name);
         logger.info("/hello, host=" + localServiceInstance.getHost() + ",serviceId=" + localServiceInstance.getServiceId());
         return "success";
     }
