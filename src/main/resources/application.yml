@@ -29,7 +29,7 @@ eureka:
     #使用springboot-actuator的健康检查, 默认是使用eureka的健康检查
     healthcheck:
       enabled: true
-    appname: provider1
+    appname: provider
     prefer-ip-address: true
 server:
   port: 0

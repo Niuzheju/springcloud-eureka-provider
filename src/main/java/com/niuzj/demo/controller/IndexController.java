@@ -40,4 +40,10 @@ public class IndexController {
         return "success";
     }
 
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    public String delete(@PathVariable Integer id){
+        logger.info(id.toString());
+        return "success";
+    }
+
 }
