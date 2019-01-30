@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @RestController
 public class IndexController {
 
     private Logger logger = Logger.getLogger(IndexController.class.getName());
+
+    private Random random = new Random();
 
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -34,9 +37,18 @@ public class IndexController {
         return "";
     }
 
+    //1800-3000
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public String put(@PathVariable Integer id){
         logger.info(id.toString());
+        //随机休眠1800到3000毫秒,大于2000毫秒时会发生熔断
+        int i = random.nextInt(1200) + 1800;
+        logger.info(String.valueOf(i));
+        try {
+            Thread.sleep(i);
+        } catch (InterruptedException e) {
+            logger.severe(e.getMessage());
+        }
         return "success";
     }
 
