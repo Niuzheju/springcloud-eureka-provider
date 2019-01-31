@@ -1,5 +1,6 @@
 package com.niuzj.demo.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -21,6 +22,7 @@ public class IndexController {
     private DiscoveryClient discoveryClient;
 
     @RequestMapping("/hello")
+    @HystrixCommand
     public String hello(String name, @RequestHeader String airen, @RequestBody Map<String, Object> map){
         ServiceInstance localServiceInstance = discoveryClient.getLocalServiceInstance();
         logger.info("name=" + name);
@@ -31,18 +33,20 @@ public class IndexController {
     }
 
     @RequestMapping("/uri")
+    @HystrixCommand
     public String uri(@RequestBody Map<String, Object> map, HttpServletResponse response){
         logger.info("params=" + map);
         response.addHeader("Location", "http://www.baidu.com?" + map.get("name"));
         return "";
     }
 
-    //1800-3000
+    //1600-2100
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
+    @HystrixCommand
     public String put(@PathVariable Integer id){
         logger.info(id.toString());
         //随机休眠1800到3000毫秒,大于2000毫秒时会发生熔断
-        int i = random.nextInt(1200) + 1800;
+        int i = random.nextInt(500) + 1600;
         logger.info(String.valueOf(i));
         try {
             Thread.sleep(i);
@@ -53,6 +57,7 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    @HystrixCommand
     public String delete(@PathVariable Integer id){
         logger.info(id.toString());
         return "success";
