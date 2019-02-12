@@ -1,6 +1,7 @@
 package com.niuzj.demo.controller;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.niuzj.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -22,7 +23,7 @@ public class IndexController {
     private DiscoveryClient discoveryClient;
 
     @RequestMapping("/hello")
-    @HystrixCommand
+    @HystrixCommand//用于hystrix监控
     public String hello(String name, @RequestHeader String airen, @RequestBody Map<String, Object> map){
         ServiceInstance localServiceInstance = discoveryClient.getLocalServiceInstance();
         logger.info("name=" + name);
@@ -34,10 +35,10 @@ public class IndexController {
 
     @RequestMapping("/uri")
     @HystrixCommand
-    public String uri(@RequestBody Map<String, Object> map, HttpServletResponse response){
+    public User uri(@RequestBody Map<String, Object> map, HttpServletResponse response){
         logger.info("params=" + map);
-        response.addHeader("Location", "http://www.baidu.com?" + map.get("name"));
-        return "";
+        response.addHeader("Location", "http://www.baidu.com?name=" + map.get("name"));
+        return new User((String) map.get("name"), 20);
     }
 
     //1600-2100
@@ -61,6 +62,13 @@ public class IndexController {
     public String delete(@PathVariable Integer id){
         logger.info(id.toString());
         return "success";
+    }
+
+    @RequestMapping("/addUser")
+    public String add(@RequestBody User user){
+        System.out.println(user);
+        return "success";
+
     }
 
 }
